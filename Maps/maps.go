@@ -6,7 +6,6 @@ import (
 
 func main() {
 	fmt.Println("")
-	fmt.Println("prueba")
 	fmt.Println("--------------------------------")
 	//varName := make(map[keyType]valueType)
 
