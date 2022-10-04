@@ -12,7 +12,7 @@ func main() {
 
 	user1 := User{"Agustin", "agus@gmail.com", 18}
 	fmt.Println(user1)
-	fmt.Println("Name: ", user1.Name, "\n")
+	fmt.Println("Name: ", user1.Name, "\n ")
 
 	user1.showUserData()
 }
