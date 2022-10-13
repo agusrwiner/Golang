@@ -37,17 +37,39 @@ func main() {
 
 	fmt.Printf("\nbreakfast_menu1.FoodList type: '%T'\n", breakfast_menu1.FoodList)
 	fmt.Println("\nbreakfast_menu1.FoodList: \n", breakfast_menu1.FoodList)
+
+	fmt.Println("\n============================================")
+	breakfast_menu1.showData()
 }
 
 type Breakfast_menu struct {
 	//XMLName  xml.Name `xml:"breakfast_menu"`
 	FoodList []Food `xml:"food"`
 }
+
+func (bm *Breakfast_menu) showData() {
+	fmt.Println("\n--------------------------------")
+	fmt.Println("Food list: ")
+	for _, food := range bm.FoodList {
+		food.showData()
+	}
+	fmt.Println("--------------------------------")
+}
+
 type Food struct {
 	Name        string `xml:"name"`
 	Price       string `xml:"price"`
 	Description string `xml:"description"`
 	Calories    string `xml:"calories"`
+}
+
+func (f *Food) showData() {
+	//fmt.Println("\n--------------------------------")
+	fmt.Println("\tName: ", f.Name)
+	fmt.Println("\tPrice: ", f.Price)
+	fmt.Println("\tCalories: ", f.Calories)
+	fmt.Println("\tDescription: ", f.Description)
+	fmt.Println("\t--------------------------------")
 }
 
 // func getContentAsString(url string) string {
