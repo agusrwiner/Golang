@@ -38,7 +38,7 @@ func main() {
 	fmt.Printf("\nbreakfast_menu1.FoodList type: '%T'\n", breakfast_menu1.FoodList)
 	fmt.Println("\nbreakfast_menu1.FoodList: \n", breakfast_menu1.FoodList)
 
-	fmt.Println("\n============================================")
+	fmt.Println("\n========================================================")
 	breakfast_menu1.showData()
 }
 
