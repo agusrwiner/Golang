@@ -10,7 +10,8 @@ func main() {
 	fmt.Println("\n--------------------------------")
 	//basic declaration
 
-	const url = "https://lco.dev"
+	//const url = "https://lco.dev"
+	const url = "https://www.w3schools.com/xml/simple.xml"
 
 	//create a request
 	response, err := http.Get(url) //you can use POST also
@@ -23,7 +24,7 @@ func main() {
 	//read a response
 	dataInBytes, err := ioutil.ReadAll(response.Body)
 	checkNilError(err)
-	fmt.Println("Data read: ", string(dataInBytes))
+	fmt.Println("\nData read:\n", string(dataInBytes))
 }
 
 func checkNilError(err error) {
