@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
@@ -33,12 +32,11 @@ func main() {
 	err := xml.Unmarshal(bytesResponse, &breakfast_menu1) //we save the bytes into the struct
 	checkNilError(err)
 
-	jsonData, err := json.Marshal(breakfast_menu1) //parse our data to json
-	checkNilError(err)
+	fmt.Printf("\nbreakfast_menu1 type: '%T'\n", breakfast_menu1)
+	fmt.Println("\nbreakfast_menu1: \n", breakfast_menu1)
 
-	//fmt.Println("JSON data:\n\t", jsonData)
-	fmt.Println(" ")
-	fmt.Println(string(jsonData))
+	fmt.Printf("\nbreakfast_menu1.FoodList type: '%T'\n", breakfast_menu1.FoodList)
+	fmt.Println("\nbreakfast_menu1.FoodList: \n", breakfast_menu1.FoodList)
 }
 
 type Breakfast_menu struct {
