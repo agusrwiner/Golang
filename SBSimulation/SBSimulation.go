@@ -9,10 +9,14 @@ import (
 
 /*
 <feed>
-	<post>
+	<item>
 		<title>postTitle</title>
+		<link>postLink</link>
 		<description>postDescription</description>
-	</post>
+		<pubDate>Mon, 17 Oct 2022 14:13:37 +0000</pubDate>
+		<dc:creator>CISA</dc:creator>
+		<guid isPermaLink="false">18076 at https://us-cert.cisa.gov</guid>
+	</item>
 </feed>
 */
 
@@ -21,31 +25,8 @@ func main() {
 	fmt.Println("########################################################")
 	fmt.Println("########################################################")
 
-	/*rawXmlData :=
-	`<feed>
-		<post>
-			<title>Virus H</title>
-			<description>Este virus afecta a los usuarios de Postgre DB</description>
-		</post>
-		<post>
-			<title>Virus W-YZ</title>
-			<description>Este virus afecta a los usuarios de Windows 8 en adelante</description>
-		</post>
-		<post>
-			<title>Bug R2-D</title>
-			<description>Este bug afecta a los usuarios fans de SW</description>
-		</post>
-		<post>
-			<title>Virus XUW32</title>
-			<description>Este virus afecta a los usuarios de Linux</description>
-		</post>
-	</feed>`*/
-
-	const url = ""
-	bytesResponse := getContentInBytes(url)
-
-	var feed1 Feed
-	err := xml.Unmarshal(bytesResponse, &feed1)
+	const url = "https://www.cisa.gov/uscert/ncas/bulletins.xml"
+	feed1, err := Fetch(url)
 	checkNilError(err)
 
 	//====== TESTS ======
@@ -59,25 +40,16 @@ func main() {
 	feed1.showData()
 }
 
-// ========= POST =========
-type Post struct {
-	//Id          int
-	Title       string `xml:"title"`
-	Description string `xml:"description"`
-}
-
-func (p *Post) showData() {
-	//fmt.Println("\n--------------------------------")
-	//fmt.Println("\tId: ", p.Id)
-	fmt.Println("\tTitle: ", p.Title)
-	fmt.Println("\tDescription: ", p.Description)
-	fmt.Println("\t--------------------------------")
+// ========= RSS =========
+type RSS struct {
+	Channel string `xml:"rss"`
 }
 
 // ========= FEED =========
 type Feed struct {
 	//Name  string //could also be an id
-	Posts []Post `xml:"feed"`
+	XMLName xml.Name `xml:"channel"`
+	Posts   []Post   `xml:"item"`
 }
 
 func (feed *Feed) showData() {
@@ -90,16 +62,35 @@ func (feed *Feed) showData() {
 	fmt.Println("--------------------------------")
 }
 
+// ========= POST =========
+type Post struct {
+	//Id          int
+	XMLName xml.Name `xml:"item"`
+	Title   string   `xml:"title"`
+	//Description string `xml:"description"`
+}
+
+func (p *Post) showData() {
+	//fmt.Println("\n--------------------------------")
+	//fmt.Println("\tId: ", p.Id)
+	fmt.Println("\tTitle: ", p.Title)
+	//fmt.Println("\tDescription: ", p.Description)
+	fmt.Println("\t--------------------------------")
+}
+
 // ========= FUNCS & AIDS =========
-func getContentInBytes(url string) []byte {
-	response, err := http.Get(url) //you can use POST also
+func Fetch(url string) (Feed, error) {
+	response, err := http.Get(url) //we make the request
 	checkNilError(err)
 	defer response.Body.Close()
 
-	bytes, err := ioutil.ReadAll(response.Body) //slice of bytes
+	bytes, err := ioutil.ReadAll(response.Body) //we get an slice of bytes
 	checkNilError(err)
 
-	return bytes
+	var feed Feed
+	err = xml.Unmarshal(bytes, &feed) //we parse the slice of bytes to a Feed struct
+
+	return feed, err //we return the Feed
 }
 
 func checkNilError(err error) {
