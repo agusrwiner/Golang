@@ -93,9 +93,9 @@ func Fetch(url string) (BreakfastMenu, error) {
 
 // serializar a json
 func Serialize(breakfast_menu BreakfastMenu) ([]byte, error) {
-	jsonData, err := json.Marshal(breakfast_menu)
+	jsonInBytes, err := json.Marshal(breakfast_menu)
 
-	return jsonData, err
+	return jsonInBytes, err
 }
 
 func checkNilError(err error) {
