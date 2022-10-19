@@ -28,7 +28,7 @@ func main() {
 	//create a request
 	bytesResponse := getContentInBytes(url)
 
-	var breakfast_menu1 Breakfast_menu                    //create the reference to a struct
+	var breakfast_menu1 BreakfastMenu                     //create the reference to a struct
 	err := xml.Unmarshal(bytesResponse, &breakfast_menu1) //we save the bytes into the struct
 	checkNilError(err)
 
@@ -42,12 +42,12 @@ func main() {
 	breakfast_menu1.showData()
 }
 
-type Breakfast_menu struct {
+type BreakfastMenu struct {
 	//XMLName  xml.Name `xml:"breakfast_menu"`
 	FoodList []Food `xml:"food"`
 }
 
-func (bm *Breakfast_menu) showData() {
+func (bm *BreakfastMenu) showData() {
 	fmt.Println("\n--------------------------------")
 	fmt.Println("Food list: ")
 	for _, food := range bm.FoodList {
