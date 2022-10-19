@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
@@ -26,17 +27,17 @@ func main() {
 	const url = "https://www.w3schools.com/xml/simple.xml"
 
 	//create a request
-	bytesResponse := getContentInBytes(url)
+	breakfast_menu1, err := Fetch(url)
+	checkNilError(err)
 
-	var breakfast_menu1 BreakfastMenu                     //create the reference to a struct
-	err := xml.Unmarshal(bytesResponse, &breakfast_menu1) //we save the bytes into the struct
+	json, err := Serialize(breakfast_menu1)
 	checkNilError(err)
 
 	fmt.Printf("\nbreakfast_menu1 type: '%T'\n", breakfast_menu1)
 	fmt.Println("\nbreakfast_menu1: \n", breakfast_menu1)
 
-	fmt.Printf("\nbreakfast_menu1.FoodList type: '%T'\n", breakfast_menu1.FoodList)
-	fmt.Println("\nbreakfast_menu1.FoodList: \n", breakfast_menu1.FoodList)
+	fmt.Printf("\njson type: '%T'\n", json)
+	fmt.Println("\njson: \n", string(json))
 
 	fmt.Println("\n========================================================")
 	breakfast_menu1.showData()
@@ -72,25 +73,29 @@ func (f *Food) showData() {
 	fmt.Println("\t--------------------------------")
 }
 
-// func getContentAsString(url string) string {
-// 	response, err := http.Get(url) //you can use POST also
-// 	checkNilError(err)
-// 	defer response.Body.Close()
-
-// 	bytes, err := ioutil.ReadAll(response.Body) //slice of bytes
-// 	checkNilError(err)
-
-//		return string(bytes)
-//	}
-func getContentInBytes(url string) []byte {
-	response, err := http.Get(url) //you can use POST also
+/*
+Recieves URL of an XML -
+Retorns the XML parsed to an BreakfastMenu
+*/
+func Fetch(url string) (BreakfastMenu, error) {
+	response, err := http.Get(url) //we make the request
 	checkNilError(err)
 	defer response.Body.Close()
 
-	bytes, err := ioutil.ReadAll(response.Body) //slice of bytes
+	bytes, err := ioutil.ReadAll(response.Body) //we get an slice of bytes
 	checkNilError(err)
 
-	return bytes
+	var bm BreakfastMenu
+	err = xml.Unmarshal(bytes, &bm) //we parse the slice of bytes to a Feed struct
+
+	return bm, err //we return the Feed
+}
+
+// serializar a json
+func Serialize(breakfast_menu BreakfastMenu) ([]byte, error) {
+	jsonData, err := json.Marshal(breakfast_menu)
+
+	return jsonData, err
 }
 
 func checkNilError(err error) {
