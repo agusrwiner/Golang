@@ -27,20 +27,20 @@ func main() {
 	const url = "https://www.w3schools.com/xml/simple.xml"
 
 	//create a request
-	breakfast_menu1, err := Fetch(url)
+	breakfasMenu1, err := Fetch(url)
 	checkNilError(err)
 
-	json, err := Serialize(breakfast_menu1)
+	json, err := Serialize(breakfasMenu1)
 	checkNilError(err)
 
-	fmt.Printf("\nbreakfast_menu1 type: '%T'\n", breakfast_menu1)
-	fmt.Println("\nbreakfast_menu1: \n", breakfast_menu1)
+	fmt.Printf("\nbreakfast_menu1 type: '%T'\n", breakfasMenu1)
+	fmt.Println("\nbreakfast_menu1: \n", breakfasMenu1)
 
 	fmt.Printf("\njson type: '%T'\n", json)
 	fmt.Println("\njson: \n", string(json))
 
 	fmt.Println("\n========================================================")
-	breakfast_menu1.showData()
+	breakfasMenu1.showData()
 }
 
 type BreakfastMenu struct {
